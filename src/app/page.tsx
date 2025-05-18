@@ -11,14 +11,11 @@ import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
 export default function Home() {
   const [quote, setQuote] = useState<Quote | null>(null);
   const [favorites, setFavorites] = useState<Quote[]>([]);
-  // const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [quoteHistory, setQuoteHistory] = useState<Quote[]>([]);
 
-  const fetchNewQuote = useCallback(async () => //{
-    // if (isInitialLoad) {
-    //   setIsInitialLoad(false);
-    //}
-
+  const fetchNewQuote = useCallback(async () => {
+    setIsLoading(true);
     try {
       let newQuote: Quote;
       let attempts = 0;
@@ -38,35 +35,17 @@ export default function Home() {
       setQuoteHistory((prev) => [...prev, newQuote].slice(-10)); // Keep last 10 quotes in history
     } catch (error) {
       console.error("Error fetching quote:", error);
+    } finally {
+      setIsLoading(false);
     }
-  }, [isInitialLoad, quoteHistory]);
+  }, [quoteHistory]);
 
   useEffect(() => {
     const savedFavorites = localStorage.getItem("favorites");
     if (savedFavorites) {
       setFavorites(JSON.parse(savedFavorites));
     }
-    fetchNewQuote();
-  }, []); //change fetchNewQuote
-
-  // useEffect(() => {
-  //   let timer: NodeJS.Timeout;
-  //   if (quote) {
-  //     timer = setTimeout(() => {
-  //       fetchNewQuote();
-  //     }, 10000); // 10 seconds
-  //   }
-  //   return () => {
-  //     if (timer) clearTimeout(timer);
-  //   };
-  // }, [quote, fetchNewQuote]);
-// useEffect(() => {
-//   const interval = setInterval(fetchNewQuote, 10000); // or some delay
-//   return () => clearInterval(interval);
-// }, []);
-
-
-
+  }, []);
 
   const toggleFavorite = () => {
     if (!quote) return;
@@ -107,7 +86,7 @@ export default function Home() {
         </div>
 
         <div className="max-w-4xl mx-auto fade-in fade-in-3">
-          {isInitialLoad ? (
+          {isLoading ? (
             <div className="flex justify-center items-center h-64">
               <motion.div
                 animate={{ rotate: 360 }}
