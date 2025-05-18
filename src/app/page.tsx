@@ -60,19 +60,18 @@ export default function Home() {
   //     if (timer) clearTimeout(timer);
   //   };
   // }, [quote, fetchNewQuote]);
+useEffect(() => {
+  if (isInitialLoad) {
+    fetchNewQuote(); // Only fetch once initially
+    setIsInitialLoad(false);
+  }
 
-  useEffect(() => {
-  // Fetch the first quote immediately
-  fetchNewQuote();
-
-  // Then fetch a new quote every 10 seconds
   const interval = setInterval(() => {
     fetchNewQuote();
-  }, 20000);
-
-  // Cleanup on unmount
+  }, 20000); // 20 seconds
   return () => clearInterval(interval);
-}, [fetchNewQuote]);
+}, [isInitialLoad, fetchNewQuote]);
+
 
 
   const toggleFavorite = () => {
