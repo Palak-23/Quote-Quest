@@ -26,22 +26,6 @@ export default function FavoritesPage() {
     localStorage.setItem("favorites", JSON.stringify(newFavorites));
   };
 
-  const handleShare = async (quoteToShare: Quote) => {
-    const text = `${quoteToShare.q} - ${quoteToShare.a}`;
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: "QuoteQuest",
-          text,
-        });
-      } catch (error) {
-        console.error("Error sharing:", error);
-      }
-    } else {
-      await navigator.clipboard.writeText(text);
-    }
-  };
-
   return (
     <main className="min-h-screen bg-[#F5F1E8] dark:bg-[#F5F1E8] transition-colors duration-200 px-4 py-24">
       <div className="container mx-auto">
@@ -67,7 +51,6 @@ export default function FavoritesPage() {
                 quote={fav}
                 isFavorite={true}
                 onToggleFavorite={() => handleRemoveFavorite(fav)}
-                onShare={() => handleShare(fav)}
               />
             ))
           ) : (
