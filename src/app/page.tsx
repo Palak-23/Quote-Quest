@@ -49,17 +49,31 @@ export default function Home() {
     fetchNewQuote();
   }, [fetchNewQuote]);
 
+  // useEffect(() => {
+  //   let timer: NodeJS.Timeout;
+  //   if (quote) {
+  //     timer = setTimeout(() => {
+  //       fetchNewQuote();
+  //     }, 10000); // 10 seconds
+  //   }
+  //   return () => {
+  //     if (timer) clearTimeout(timer);
+  //   };
+  // }, [quote, fetchNewQuote]);
+
   useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (quote) {
-      timer = setTimeout(() => {
-        fetchNewQuote();
-      }, 10000); // 10 seconds
-    }
-    return () => {
-      if (timer) clearTimeout(timer);
-    };
-  }, [quote, fetchNewQuote]);
+  // Fetch the first quote immediately
+  fetchNewQuote();
+
+  // Then fetch a new quote every 10 seconds
+  const interval = setInterval(() => {
+    fetchNewQuote();
+  }, 10000);
+
+  // Cleanup on unmount
+  return () => clearInterval(interval);
+}, [fetchNewQuote]);
+
 
   const toggleFavorite = () => {
     if (!quote) return;
