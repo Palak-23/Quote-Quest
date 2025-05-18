@@ -60,10 +60,10 @@ export default function Home() {
   //     if (timer) clearTimeout(timer);
   //   };
   // }, [quote, fetchNewQuote]);
-useEffect(() => {
-  const interval = setInterval(fetchNewQuote, 10000); // or some delay
-  return () => clearInterval(interval);
-}, []);
+// useEffect(() => {
+//   const interval = setInterval(fetchNewQuote, 10000); // or some delay
+//   return () => clearInterval(interval);
+// }, []);
 
 
 
