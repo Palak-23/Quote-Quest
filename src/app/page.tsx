@@ -11,13 +11,13 @@ import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
 export default function Home() {
   const [quote, setQuote] = useState<Quote | null>(null);
   const [favorites, setFavorites] = useState<Quote[]>([]);
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  // const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [quoteHistory, setQuoteHistory] = useState<Quote[]>([]);
 
-  const fetchNewQuote = useCallback(async () => {
-    if (isInitialLoad) {
-      setIsInitialLoad(false);
-    }
+  const fetchNewQuote = useCallback(async () => //{
+    // if (isInitialLoad) {
+    //   setIsInitialLoad(false);
+    //}
 
     try {
       let newQuote: Quote;
@@ -47,7 +47,7 @@ export default function Home() {
       setFavorites(JSON.parse(savedFavorites));
     }
     fetchNewQuote();
-  }, [fetchNewQuote]);
+  }, []); //change fetchNewQuote
 
   // useEffect(() => {
   //   let timer: NodeJS.Timeout;
