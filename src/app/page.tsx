@@ -1,11 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { SunIcon, MoonIcon } from "@heroicons/react/24/outline";
 import QuoteCard from "@/components/QuoteCard";
 import { fetchRandomQuote } from "@/lib/api";
-import { useTheme } from "@/lib/theme";
 import { Quote } from "@/types/quote";
 import Link from "next/link";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
@@ -15,9 +13,8 @@ export default function Home() {
   const [favorites, setFavorites] = useState<Quote[]>([]);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [quoteHistory, setQuoteHistory] = useState<Quote[]>([]);
-  const { theme, toggleTheme } = useTheme();
 
-  const fetchNewQuote = async () => {
+  const fetchNewQuote = useCallback(async () => {
     if (isInitialLoad) {
       setIsInitialLoad(false);
     }
@@ -42,7 +39,7 @@ export default function Home() {
     } catch (error) {
       console.error("Error fetching quote:", error);
     }
-  };
+  }, [isInitialLoad, quoteHistory]);
 
   useEffect(() => {
     const savedFavorites = localStorage.getItem("favorites");
@@ -50,7 +47,7 @@ export default function Home() {
       setFavorites(JSON.parse(savedFavorites));
     }
     fetchNewQuote();
-  }, []);
+  }, [fetchNewQuote]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -78,24 +75,6 @@ export default function Home() {
 
     setFavorites(newFavorites);
     localStorage.setItem("favorites", JSON.stringify(newFavorites));
-  };
-
-  const shareQuote = async () => {
-    if (!quote) return;
-
-    const text = `${quote.q} - ${quote.a}`;
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: "QuoteQuest",
-          text,
-        });
-      } catch (error) {
-        console.error("Error sharing:", error);
-      }
-    } else {
-      await navigator.clipboard.writeText(text);
-    }
   };
 
   return (
