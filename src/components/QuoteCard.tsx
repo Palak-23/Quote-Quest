@@ -38,7 +38,7 @@ export default function QuoteCard({
     >
       <div className="mb-8">
         <p className="text-3xl font-semibold text-[#222] leading-snug mb-4">
-          "{quote.q}"
+          &ldquo;{quote.q}&rdquo;
         </p>
         <p className="text-xl text-gray-400 font-medium text-right">
           — {quote.a}

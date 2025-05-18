@@ -17,26 +17,6 @@ export default function Home() {
   const [quoteHistory, setQuoteHistory] = useState<Quote[]>([]);
   const { theme, toggleTheme } = useTheme();
 
-  useEffect(() => {
-    const savedFavorites = localStorage.getItem("favorites");
-    if (savedFavorites) {
-      setFavorites(JSON.parse(savedFavorites));
-    }
-    fetchNewQuote();
-  }, []);
-
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (quote) {
-      timer = setTimeout(() => {
-        fetchNewQuote();
-      }, 10000); // 10 seconds
-    }
-    return () => {
-      if (timer) clearTimeout(timer);
-    };
-  }, [quote]);
-
   const fetchNewQuote = async () => {
     if (isInitialLoad) {
       setIsInitialLoad(false);
@@ -63,6 +43,26 @@ export default function Home() {
       console.error("Error fetching quote:", error);
     }
   };
+
+  useEffect(() => {
+    const savedFavorites = localStorage.getItem("favorites");
+    if (savedFavorites) {
+      setFavorites(JSON.parse(savedFavorites));
+    }
+    fetchNewQuote();
+  }, []);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (quote) {
+      timer = setTimeout(() => {
+        fetchNewQuote();
+      }, 10000); // 10 seconds
+    }
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [quote, fetchNewQuote]);
 
   const toggleFavorite = () => {
     if (!quote) return;
