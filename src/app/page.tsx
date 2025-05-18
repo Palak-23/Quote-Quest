@@ -61,16 +61,10 @@ export default function Home() {
   //   };
   // }, [quote, fetchNewQuote]);
 useEffect(() => {
-  // if (isInitialLoad) {
-    fetchNewQuote(); // Only fetch once initially
-    // setIsInitialLoad(false);
-  // }
-
-  const interval = setInterval(() => {
-    fetchNewQuote();
-  }, 20000); // 20 seconds
+  const interval = setInterval(fetchNewQuote, 10000); // or some delay
   return () => clearInterval(interval);
-}, [isInitialLoad, fetchNewQuote]);
+}, []);
+
 
 
 
