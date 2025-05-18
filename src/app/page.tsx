@@ -68,7 +68,7 @@ export default function Home() {
   // Then fetch a new quote every 10 seconds
   const interval = setInterval(() => {
     fetchNewQuote();
-  }, 10000);
+  }, 20000);
 
   // Cleanup on unmount
   return () => clearInterval(interval);
